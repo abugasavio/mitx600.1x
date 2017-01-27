@@ -6,6 +6,6 @@ for month in range(1, 13):
     monthlyPayment = balance * monthlyPaymentRate
     unpaidBalance = (balance - monthlyPayment)
     interest = unpaidBalance * annualInterestRate / 12
-    balance = round(unpaidBalance + interest,2)
+    balance = round(unpaidBalance + interest, 2)
 
-print(ba)
+print(balance)

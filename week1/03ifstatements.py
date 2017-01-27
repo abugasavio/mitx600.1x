@@ -6,4 +6,3 @@ elif varA == varB:
     print('equal')
 elif varA < varB:
     print('smaller')
-    
