@@ -4,7 +4,7 @@ step = 0.1
 guess = 0.0
 
 while guess <= x:
-    if abs(guess**2 -x) >= epsilon:
+    if abs(guess**2 - x) >= epsilon:
         print(guess)
         guess += step
 

@@ -8,6 +8,7 @@
 # (so be sure to read the docstrings!)
 
 import random
+import string
 
 WORDLIST_FILENAME = "words.txt"
 
@@ -28,6 +29,7 @@ def loadWords():
     print("  ", len(wordlist), "words loaded.")
     return wordlist
 
+
 def chooseWord(wordlist):
     """
     wordlist (list): list of words (strings)
@@ -43,36 +45,59 @@ def chooseWord(wordlist):
 # so that it can be accessed from anywhere in the program
 wordlist = loadWords()
 
+
 def isWordGuessed(secretWord, lettersGuessed):
-    '''
+    """
     secretWord: string, the word the user is guessing
     lettersGuessed: list, what letters have been guessed so far
     returns: boolean, True if all the letters of secretWord are in lettersGuessed;
       False otherwise
-    '''
-    # FILL IN YOUR CODE HERE...
+    """
 
+    is_guessed = True
+    for letter in secretWord:
+        if letter not in lettersGuessed:
+            is_guessed = False
+    return is_guessed
 
 
 def getGuessedWord(secretWord, lettersGuessed):
-    '''
+    """
     secretWord: string, the word the user is guessing
     lettersGuessed: list, what letters have been guessed so far
     returns: string, comprised of letters and underscores that represents
       what letters in secretWord have been guessed so far.
-    '''
-    # FILL IN YOUR CODE HERE...
-
+    """
+    guessed_word = ""
+    for letter in secretWord:
+        if letter in lettersGuessed:
+            guessed_word += letter
+        else:
+            guessed_word += '_'
+    return guessed_word
 
 
 def getAvailableLetters(lettersGuessed):
-    '''
+    """
     lettersGuessed: list, what letters have been guessed so far
     returns: string, comprised of letters that represents what letters have not
       yet been guessed.
-    '''
-    # FILL IN YOUR CODE HERE...
-    
+    """
+    alphabet = list(string.ascii_lowercase)
+    available_letters = ''.join([letter for letter in alphabet if letter not in lettersGuessed])
+    return available_letters
+
+
+def letterInSecretWord(letter, secretWord):
+    """
+    :param letter: A letter of the alphabet
+    :param secretWord: Secret Word entered
+    :return: True if letter in secret word
+    """
+    if letter in list(secretWord):
+        return True
+    return False
+
 
 def hangman(secretWord):
     '''
@@ -94,10 +119,37 @@ def hangman(secretWord):
 
     Follows the other limitations detailed in the problem write-up.
     '''
-    # FILL IN YOUR CODE HERE...
+    remainingGuesses = 8
+    lettersGuessed = []
+    print("Welcome to the game, Hangman!")
+    print("I am thinking of a word that is " + str(len(secretWord)) + " letters long.")
 
+    while remainingGuesses > 0:
+        print("-------------")
+        availableLetters = getAvailableLetters(lettersGuessed)
+        print("You have " + str(remainingGuesses) + " guesses left.")
+        print("Available letters: " + availableLetters)
+        letterEntered = input("Please guess a letter: ")
 
+        guessedWord = getGuessedWord(secretWord, lettersGuessed)
+        if letterEntered not in availableLetters:
+            print("Oops! You've already guessed that letter: " + guessedWord)
+            continue
 
+        lettersGuessed.append(letterEntered)
+        guessedWord = getGuessedWord(secretWord, lettersGuessed)
+        if letterInSecretWord(letterEntered, secretWord):
+            print("Good guess: " + guessedWord)
+        else:
+            remainingGuesses -= 1
+            print("Oops! That letter is not in my word: " + guessedWord)
+        if isWordGuessed(secretWord, lettersGuessed):
+            break
+    print("-------------")
+    if isWordGuessed(secretWord, lettersGuessed):
+        print("Congratulations, you won!")
+    else:
+        print("Sorry, you ran out of guesses. The word was else. ")
 
 
 
@@ -105,5 +157,5 @@ def hangman(secretWord):
 # and run this file to test! (hint: you might want to pick your own
 # secretWord while you're testing)
 
-# secretWord = chooseWord(wordlist).lower()
-# hangman(secretWord)
+secretWord = chooseWord(wordlist).lower()
+hangman('c')
